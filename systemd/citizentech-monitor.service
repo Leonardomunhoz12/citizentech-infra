@@ -1,0 +1,26 @@
+[Unit]
+Description=CitizenTech - Monitoramento de CPU, RAM e Disco
+Documentation=file:///opt/citizentech/README.md
+After=network.target
+# Em caso de falha definitiva (estourar StartLimit), registra a ocorrência
+OnFailure=citizentech-monitor-failure.service
+StartLimitIntervalSec=120
+StartLimitBurst=5
+
+[Service]
+Type=notify
+NotifyAccess=all
+EnvironmentFile=-/opt/citizentech/config/citizentech.env
+ExecStart=/opt/citizentech/scripts/monitor.sh --daemon
+# Tolerância a falhas
+Restart=always
+RestartSec=5
+# Se o loop travar e deixar de enviar WATCHDOG=1, o systemd reinicia o serviço
+WatchdogSec=120
+TimeoutStopSec=15
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=citizentech-monitor
+
+[Install]
+WantedBy=multi-user.target

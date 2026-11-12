@@ -1,0 +1,78 @@
+Testes de falha - 2026-11-11T20:51:21-03:00 - host citizentech-srv01
+
+================ T1 - Matar o serviço de monitoramento (SIGKILL) e verificar recuperação ================
+PID antes: 7093
+20:51:21 SIGKILL enviado ao PID 7093
+Estado imediatamente após: activating
+20:51:27 Serviço recuperado. PID novo: 8516 (NRestarts=1)
+RESULTADO: PASS - monitor recuperado automaticamente (Restart=always)
+Nov 11 20:51:21 citizentech-srv01 systemd[1]: citizentech-monitor.service: Main process exited, code=killed, status=9/KILL
+Nov 11 20:51:21 citizentech-srv01 systemd[1]: citizentech-monitor.service: Failed with result 'signal'.
+Nov 11 20:51:21 citizentech-srv01 systemd[1]: citizentech-monitor.service: Consumed 2.670s CPU time over 32min 11.242s wall clock time, 23.7M memory peak.
+Nov 11 20:51:21 citizentech-srv01 systemd[1]: citizentech-monitor.service: Triggering OnFailure= dependencies.
+Nov 11 20:51:26 citizentech-srv01 systemd[1]: citizentech-monitor.service: Scheduled restart job, restart counter is at 1.
+Nov 11 20:51:26 citizentech-srv01 systemd[1]: Starting citizentech-monitor.service - CitizenTech - Monitoramento de CPU, RAM e Disco...
+Nov 11 20:51:26 citizentech-srv01 citizentech-monitor[8516]: 2026-11-11 20:51:26-0300 [INFO] [monitor] Daemon iniciado (intervalo=30s cpu>=80 mem>=80 disco>=85)
+Nov 11 20:51:26 citizentech-srv01 systemd[1]: Started citizentech-monitor.service - CitizenTech - Monitoramento de CPU, RAM e Disco.
+
+================ T2 - Matar a aplicação (SIGKILL) e verificar recuperação ================
+PID antes: 6831
+HTTP /health após recuperação: 200
+RESULTADO: PASS - aplicação recuperada e respondendo
+
+================ T3 - Consumo elevado de CPU (gera alerta) ================
+2026-11-11 20:51:37-0300 [INFO] [monitor] CHECK cpu=99% mem=4% (livre 15263MB de 15955MB) disco=1% (1.6G/1007G) load=1.29 0.29 0.13
+2026-11-11 20:51:37-0300 [WARN] [monitor] ALERTA: consumo elevado de CPU = 99% (limite 50%)
+Últimos alertas:
+2026-11-11 20:18:49-0300 [ALERTA] ALERTA: consumo elevado de CPU = 99% (limite 50%)
+2026-11-11 20:19:01-0300 [ALERTA] ALERTA: consumo elevado de RAM = 13% (limite 3%)
+2026-11-11 20:51:37-0300 [ALERTA] ALERTA: consumo elevado de CPU = 99% (limite 50%)
+RESULTADO: PASS - alerta de CPU registrado em alertas.log
+
+================ T4 - Consumo elevado de memória (gera alerta) ================
+2026-11-11 20:51:49-0300 [INFO] [monitor] CHECK cpu=6% mem=10% (livre 14243MB de 15955MB) disco=1% (1.6G/1007G) load=3.50 0.85 0.31
+2026-11-11 20:51:49-0300 [WARN] [monitor] ALERTA: consumo elevado de RAM = 10% (limite 3%)
+Últimos alertas:
+2026-11-11 20:19:01-0300 [ALERTA] ALERTA: consumo elevado de RAM = 13% (limite 3%)
+2026-11-11 20:51:37-0300 [ALERTA] ALERTA: consumo elevado de CPU = 99% (limite 50%)
+2026-11-11 20:51:49-0300 [ALERTA] ALERTA: consumo elevado de RAM = 10% (limite 3%)
+RESULTADO: PASS - alerta de RAM registrado
+
+================ T5 - Falha controlada em script (deve aparecer em erros.log) ================
+2026-11-11 20:51:56-0300 [INFO] [monitor] Iniciando falha controlada (comando inexistente)
+/home/leonardo/citizentech-infra/scripts/monitor.sh: line 94: this_command_does_not_exist_ct_test: command not found
+2026-11-11 20:51:56-0300 [ERROR] [monitor] Falha (exit=127) na linha 94: this_command_does_not_exist_ct_test
+Últimas linhas de erros.log:
+2026-11-11 20:51:21-0300 [ERROR] [systemd] citizentech-monitor.service entrou em estado FAILED
+2026-11-11 20:51:28-0300 [ERROR] [monitor] Serviço citizentech-app INATIVO
+2026-11-11 20:51:56-0300 [ERROR] [monitor] Falha (exit=127) na linha 94: this_command_does_not_exist_ct_test
+RESULTADO: PASS - erro registrado em erros.log
+
+================ T6 - Parar, iniciar e reiniciar o serviço de monitoramento ================
+stop  -> inactive
+start -> active
+restart-> active
+RESULTADO: PASS - controle manual do serviço funciona
+systemctl status:
+● citizentech-monitor.service - CitizenTech - Monitoramento de CPU, RAM e Disco
+     Loaded: loaded (/etc/systemd/system/citizentech-monitor.service; enabled; preset: enabled)
+     Active: active (running) since Wed 2026-11-11 20:51:58 -03; 2s ago
+ Invocation: 739d84ff19c24ef2afaf68ee0fc5fb2e
+       Docs: file:///opt/citizentech/README.md
+   Main PID: 8854 (bash)
+     Status: "monitorando"
+      Tasks: 2 (limit: 19135)
+     Memory: 4.1M (peak: 4.9M)
+        CPU: 59ms
+     CGroup: /system.slice/citizentech-monitor.service
+             ├─8854 bash /opt/citizentech/scripts/monitor.sh --daemon
+             └─8900 systemctl list-unit-files nginx.service
+
+Nov 11 20:51:58 citizentech-srv01 systemd[1]: Starting citizentech-monitor.service - CitizenTech - Monitoramento de CPU, RAM e Disco...
+Nov 11 20:51:58 citizentech-srv01 citizentech-monitor[8854]: 2026-11-11 20:51:58-0300 [INFO] [monitor] Daemon iniciado (intervalo=30s cpu>=80 mem>=80 disco>=85)
+Nov 11 20:51:58 citizentech-srv01 citizentech[8863]: [monitor] Daemon iniciado (intervalo=30s cpu>=80 mem>=80 disco>=85)
+Nov 11 20:51:58 citizentech-srv01 systemd[1]: Started citizentech-monitor.service - CitizenTech - Monitoramento de CPU, RAM e Disco.
+Nov 11 20:52:00 citizentech-srv01 citizentech-monitor[8854]: 2026-11-11 20:52:00-0300 [INFO] [monitor] CHECK cpu=0% mem=4% (livre 15251MB de 15955MB) disco=1% (1.6G/1007G) load=3.03 0.83 0.31
+
+================ RESUMO ================
+PASS=6 FAIL=0  | evidência: /home/leonardo/citizentech-infra/evidencias/falhas-20261111-205121.log

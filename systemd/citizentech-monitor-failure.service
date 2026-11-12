@@ -1,0 +1,6 @@
+[Unit]
+Description=CitizenTech - registra falha definitiva do servico de monitoramento
+
+[Service]
+Type=oneshot
+ExecStart=/bin/bash -c 'echo "$(date "+%%Y-%%m-%%d %%H:%%M:%%S%%z") [ERROR] [systemd] citizentech-monitor.service entrou em estado FAILED" | tee -a /var/log/citizentech/erros.log /var/log/citizentech/auditoria.log'
