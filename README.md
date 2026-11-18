@@ -1,5 +1,3 @@
-# CitizenTech AlertaEnchente - Infraestrutura Linux automatizada
-
 Entrega de **Operating Systems** · FIAP · Engenharia de Software (3º ano) · Global Solution 2026.2
 
 ## Equipe
