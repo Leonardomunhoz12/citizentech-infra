@@ -10,7 +10,7 @@ Entrega de **Operating Systems** · FIAP · Engenharia de Software (3º ano) · 
 | Davi Vieira | RM556798 |
 | Luca Monteiro | RM556906 |
 
-**Nome do grupo:** _(preencher)_
+**Nome do grupo:** AlertaEnchente
 
 ## Ficha da CitizenTech
 
@@ -200,45 +200,43 @@ Capturas de tela da execução real, na pasta `evidencias/`:
 
 **1. Aplicação CitizenTech no ar**
 
-![Aplicação no ar](evidencias/evidencia-01.jpeg)
+![Aplicação no ar](evidencias/01-aplicacao-no-ar.jpeg)
 
 **2. Resumo dos testes de falha (PASS=6 FAIL=0)**
 
-![Resumo dos testes de falha](evidencias/evidencia-02.jpeg)
+![Resumo dos testes de falha](evidencias/02-resumo-testes-de-falha.jpeg)
 
 **3. Serviços ativos (app, monitor e nginx)**
 
-![Status dos serviços](evidencias/evidencia-03.jpeg)
+![Status dos serviços](evidencias/03-servicos-ativos.jpeg)
 
 **4. monitor.log: verificações, alertas e recuperação**
 
-![monitor.log](evidencias/evidencia-04.jpeg)
+![monitor.log](evidencias/04-log-monitoramento.jpeg)
 
 **5. alertas.log: alertas de CPU e RAM**
 
-![alertas.log](evidencias/evidencia-05.jpeg)
+![alertas.log](evidencias/05-log-alertas.jpeg)
 
 **6. erros.log: falhas registradas**
 
-![erros.log](evidencias/evidencia-06.jpeg)
+![erros.log](evidencias/06-log-erros.jpeg)
 
 **7. auditoria.log: trilha de auditoria**
 
-![auditoria.log](evidencias/evidencia-07.jpeg)
+![auditoria.log](evidencias/07-log-auditoria.jpeg)
 
 **8. provisionamento.log: instalações e configurações**
 
-![provisionamento.log](evidencias/evidencia-08.jpeg)
+![provisionamento.log](evidencias/08-log-provisionamento.jpeg)
 
-Logs gerados automaticamente pelos testes: `evidencias/falhas-20261111-201833.log` e `evidencias/falhas-20261111-205121.log`.
+Logs gerados automaticamente pelos testes: `evidencias/testes-de-falha-2026-11-11-20h18.log` e `evidencias/testes-de-falha-2026-11-11-20h51.log`.
 
 ## Vídeo de demonstração
 
-Link: _(inserir o link do vídeo)_
+Link: [COLE AQUI O LINK DO VÍDEO](COLE_AQUI_O_LINK)
 
-## Uso de IA
-
-A IA foi usada como copiloto para estruturar e revisar os scripts. Os prompts estão registrados em [`prompts.md`](prompts.md).
+Duração máxima de 7 minutos, mostrando o provisionamento automatizado por Shell Script e a aplicação no ar.
 
 ## Solução de problemas
 
