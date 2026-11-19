@@ -234,7 +234,7 @@ Logs gerados automaticamente pelos testes: `evidencias/testes-de-falha-2026-11-1
 
 ## Vídeo de demonstração
 
-Link: [COLE AQUI O LINK DO VÍDEO](COLE_AQUI_O_LINK)
+Link: (https://youtu.be/d3JX9WZAq3M)
 
 Duração máxima de 7 minutos, mostrando o provisionamento automatizado por Shell Script e a aplicação no ar.
 
